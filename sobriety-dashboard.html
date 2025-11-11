@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Level 1 Completed — Matt's One Year Sober</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0f12;
+    --ink:#0a0a0c;
+    --card:#11151a;
+    --text:#e9f1ff;
+    --muted:#a8b3c7;
+    --neon:#00e5ff;      /* electric cyan */
+    --neon2:#ff2bd6;     /* hot pink thread */
+    --glow:#6df0ff;
+    --gold:#ffd166;
+    --green:#3ad07a;
+    --red:#ff6b6b;
+    --orange:#ff9f1a;
+    --legendary:#9945ff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  .wrap{max-width:1050px;margin:0 auto;padding:24px}
+  h1,h2,h3{font-family:"Space Grotesk",system-ui,sans-serif;margin:0 0 12px}
+  h1{font-size:clamp(38px,6vw,72px);line-height:1.05;letter-spacing:.5px}
+  h2{font-size:clamp(24px,3.6vw,40px)}
+  p{color:var(--muted);line-height:1.6;margin:0}
+
+  /* ====== Global vibes (art-inspired) ====== */
+  /* Radial burst background */
+  .burst{
+    position:fixed;inset:-20vmax;z-index:-2;
+    background:
+      radial-gradient(closest-side at 55% 52%, rgba(255,195,0,.08), transparent 55%),
+      radial-gradient(closest-side at 45% 48%, rgba(255,43,214,.10), transparent 62%),
+      radial-gradient(circle at 50% 50%, rgba(0,229,255,.10), transparent 70%),
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,.03), transparent 100%);
+    filter: saturate(110%);
+  }
+  /* Hot-pink "string" web overlay */
+  .thread{
+    position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background-image:
+      repeating-linear-gradient(25deg, rgba(255,43,214,.095) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(115deg, rgba(255,43,214,.08) 0 2px, transparent 2px 60px);
+    mask-image: radial-gradient(60% 60% at 50% 50%, #000 50%, transparent 85%);
+    opacity:.9;
+  }
+
+  /* Checkerboard warp divider */
+  .checker{
+    --size:32px;
+    background:
+      conic-gradient(from 0deg at 50% 50%, #000 25%, #fff 0 50%, #000 0 75%, #fff 0) 0 0/var(--size) var(--size);
+    filter: grayscale(1) brightness(0.8);
+    transform: perspective(900px) rotateX(55deg) scaleY(.75);
+    border-radius:18px;
+    border:1px solid #1c222b;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35) inset, 0 6px 24px rgba(0,0,0,.4);
+  }
+
+  /* Drip mask for section transitions */
+  .drip{
+    --c: var(--neon2);
+    position:relative;overflow:hidden;border-radius:18px;
+    border:1px solid #1b212a;background:linear-gradient(180deg,#0e1319,#07090d);
+  }
+  .drip::before{
+    content:"";position:absolute;inset:-80px -10px auto -10px;height:140px;
+    background:
+      radial-gradient(20px 55px at 8% 60%, var(--c) 60%, transparent 62%),
+      radial-gradient(24px 70px at 22% 60%, var(--c) 60%, transparent 62%),
+      radial-gradient(18px 63px at 36% 60%, var(--c) 60%, transparent 62%),
+      radial-gradient(24px 65px at 50% 60%, var(--c) 60%, transparent 62%),
+      radial-gradient(22px 70px at 64% 60%, var(--c) 60%, transparent 62%),
+      radial-gradient(18px 60px at 78% 60%, var(--c) 60%, transparent 62%),
+      radial-gradient(22px 66px at 92% 60%, var(--c) 60%, transparent 62%),
+      linear-gradient(var(--c), var(--c));
+    filter: drop-shadow(0 12px 18px rgba(255,43,214,.35));
+    clip-path: polygon(0 0,100% 0,100% 60%,0 60%);
+    opacity:.9;
+  }
+
+  /* Cards */
+  .grid{display:grid;gap:18px}
+  @media(min-width:860px){ .grid.cols-2{grid-template-columns:1fr 1fr} .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0) 40%);
+    border:1px solid #1b212a;border-radius:16px;padding:20px 18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.02);
+    backdrop-filter: blur(4px);
+    position:relative;
+    overflow:hidden;
+  }
+  .card.legendary{
+    border:2px solid var(--legendary);
+    box-shadow:0 0 30px rgba(153,69,255,.3), inset 0 0 20px rgba(153,69,255,.1);
+  }
+  .card.legendary::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(45deg, transparent, rgba(153,69,255,.1), transparent);
+    animation:shimmer 3s infinite;
+  }
+  @keyframes shimmer{
+    0%{transform:translateX(-100%)}
+    100%{transform:translateX(100%)}
+  }
+  .tag{display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid #27303b;color:#b7c4da;background:#0b1016}
+  .big{font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:.5px}
+  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+
+  /* Bars / visual metrics */
+  .bar{height:10px;border-radius:999px;background:#0b1117;border:1px solid #1c2430;overflow:hidden;position:relative}
+  .bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--neon),var(--glow));box-shadow:0 0 16px var(--glow)}
+  .shadowbar{position:relative}
+  .shadowbar::after{
+    content:"";position:absolute;inset:0;border-radius:999px;mix-blend-mode:screen;
+    background:linear-gradient(90deg, transparent 0 30%, rgba(255,107,107,.25) 30% 100%);
+    pointer-events:none
+  }
+
+  /* Rarity meter */
+  .rarity-meter{
+    display:flex;align-items:center;gap:10px;margin-top:12px;
+  }
+  .rarity-dot{
+    width:12px;height:12px;border-radius:50%;background:#1c2430;
+    transition:all .3s;
+  }
+  .rarity-dot.active{
+    background:var(--legendary);
+    box-shadow:0 0 10px var(--legendary);
+  }
+
+  /* Counters */
+  .counter{font-variant-numeric:tabular-nums}
+
+  /* Scroll reveal */
+  .reveal{opacity:0;transform:translateY(22px) scale(.98);transition:opacity .65s ease, transform .65s ease}
+  .reveal.show{opacity:1;transform:translateY(0) scale(1)}
+
+  /* Hero progress ring */
+  .ring{
+    width:min(260px,60vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;margin:auto;
+    background:
+      radial-gradient(closest-side,#0e1319 80%, transparent 81% 100%),
+      conic-gradient(var(--green) calc(var(--pct)*1%), rgba(255,255,255,.08) 0);
+    box-shadow:0 0 40px rgba(61, 255, 177, .15), inset 0 0 20px rgba(0,0,0,.6);
+  }
+  .ring::after{
+    content:"";position:absolute;inset:18px;border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(0,229,255,.25), transparent 55%),
+      radial-gradient(circle at 55% 60%, rgba(255,43,214,.18), transparent 65%);
+    filter: blur(12px)
+  }
+
+  /* Heatmap grid */
+  .heatmap{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(20px,1fr));gap:2px;
+    margin-top:12px;
+  }
+  .heat-cell{
+    aspect-ratio:1;border-radius:2px;background:#0b1117;
+    transition:all .3s;
+  }
+  .heat-cell.low{background:#1c3a3a}
+  .heat-cell.med{background:#2d5a5a}
+  .heat-cell.high{background:#3ad07a}
+  .heat-cell.peak{background:#00e5ff;box-shadow:0 0 8px #00e5ff}
+
+  /* Vinyl */
+  .vinyl{
+    width:160px;aspect-ratio:1;border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 50%, #111 0 40%, #000 41% 44%, #111 45% 50%, #000 51%),
+      repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.07) 0 1px, transparent 1px 3px);
+    box-shadow:0 8px 24px rgba(0,0,0,.35);position:relative;margin:auto;animation:spin 12s linear infinite;
+  }
+  .vinyl::before{content:"";position:absolute;inset:58px;border-radius:50%;background:radial-gradient(#ff4dc2,#ff2bd6)}
+  @keyframes spin{to{transform:rotate(1turn)}}
+
+  /* CTA Paint area */
+  .paint{
+    border:1px dashed #2a3340;border-radius:16px;padding:16px;background:linear-gradient(180deg,#0a0f14,#091016);
+  }
+  .paint h3{margin-bottom:6px}
+  .paint ul{margin:10px 0 0 18px;color:var(--muted)}
+  .btn{
+    display:inline-block;margin-top:12px;padding:10px 16px;border:1px solid #263141;border-radius:12px;text-decoration:none;color:var(--text);
+    background:linear-gradient(180deg,#0d141b,#0a0f14);box-shadow:0 8px 20px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04)
+  }
+  .btn--neon{border-color:#0e3a42; background:linear-gradient(180deg,#031d23,#041116); box-shadow:0 0 24px rgba(0,229,255,.22)}
+  .center{text-align:center}
+
+  /* Tiny helper */
+  .muted{color:var(--muted)}
+  .pulse{animation:pulse 2s infinite}
+  @keyframes pulse{
+    0%,100%{transform:scale(1);opacity:1}
+    50%{transform:scale(1.05);opacity:.9}
+  }
+</style>
+</head>
+<body>
+<div class="burst"></div>
+<div class="thread"></div>
+
+<div class="wrap">
+  <!-- ===== HERO ===== -->
+  <section class="reveal" id="hero">
+    <span class="tag mono" id="date-range">Nov 8, 2024 → Nov 8, 2025</span>
+    <h1 style="margin-top:10px">Level 1 Completed</h1>
+    <p class="muted" id="subtitle" style="margin-bottom:8px">One year clean from meth. 365 days of choosing life.</p>
+    <div class="tag mono pulse" style="background:linear-gradient(90deg,#ff2bd6,#00e5ff);color:#fff;border:none;margin-top:8px">
+      🏆 LEGENDARY ACHIEVEMENT: Only 12% make it this far
+    </div>
+
+    <div class="grid cols-2" style="margin-top:20px">
+      <div class="card">
+        <h3 style="margin-bottom:6px">Player</h3>
+        <div class="big" id="player-name">Matt</div>
+        <p class="muted">Class: <strong id="player-class">Artist / DJ / Survivor</strong></p>
+        <p class="muted">Questline: <span class="mono">Reclaim Reality</span></p>
+        <div style="margin-top:12px">
+          <p class="muted" style="font-size:12px;margin-bottom:4px">Beat the odds (88% relapse rate)</p>
+          <div class="bar"><span style="width:88%;background:linear-gradient(90deg,#ff6b6b,#ff2bd6)"></span></div>
+        </div>
+      </div>
+
+      <div class="card center">
+        <div class="ring" id="ring" style="--pct:100">
+          <div style="z-index:1;position:relative">
+            <div class="big counter" id="xp">3,650 XP</div>
+            <div class="muted">365 / 365 days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RARITY & SURVIVAL ===== -->
+  <section class="reveal" style="margin-top:28px">
+    <h2 style="text-align:center;margin-bottom:16px">Survival Statistics</h2>
+    <div class="grid cols-3">
+      <div class="card legendary">
+        <h3>Rarity Level</h3>
+        <div class="big">1 in 8</div>
+        <p class="muted">achieve 1 year clean</p>
+        <div class="rarity-meter">
+          <div class="rarity-dot active"></div>
+          <div class="rarity-dot active"></div>
+          <div class="rarity-dot active"></div>
+          <div class="rarity-dot active"></div>
+          <div class="rarity-dot active"></div>
+        </div>
+        <span class="tag mono" style="background:var(--legendary);color:#fff;margin-top:8px">ULTRA RARE</span>
+      </div>
+      
+      <div class="card" style="border-color:#ff2bd6">
+        <h3>Withdrawal Boss Fight</h3>
+        <div class="big counter">180</div>
+        <p class="muted">days survived (hardest phase)</p>
+        <div class="bar" style="margin-top:8px">
+          <span style="width:100%;background:linear-gradient(90deg,#ff2bd6,#ff6b6b)"></span>
+        </div>
+        <p class="muted" style="font-size:11px;margin-top:4px">Peak difficulty: Days 30-90</p>
+      </div>
+      
+      <div class="card" style="border-color:#00e5ff">
+        <h3>Life Years Reclaimed</h3>
+        <div class="big counter">+7</div>
+        <p class="muted">potential years added back</p>
+        <div class="bar" style="margin-top:8px">
+          <span style="width:100%;background:linear-gradient(90deg,#00e5ff,#6df0ff)"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MONEY SAVED ===== -->
+  <section class="reveal" style="margin-top:28px">
+    <div class="drip" style="padding:26px 20px 20px">
+      <h2>Gold Reclaimed</h2>
+      <p class="muted">What you didn't spend on destruction became creation fuel.</p>
+      <div class="grid cols-3" style="margin-top:14px">
+        <div class="card">
+          <h3>Avg Saved / Month</h3>
+          <div class="big counter" id="avg-month">$800-$1,200</div>
+          <div class="bar shadowbar" style="margin-top:8px">
+            <span id="avg-month-bar" style="width:75%"></span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Total Year Saved</h3>
+          <div class="big counter" id="year-total">$9,600-$14,400</div>
+          <p class="muted" style="margin-top:6px">Enough for studio equipment</p>
+        </div>
+        <div class="card">
+          <h3>Former Habit Cost</h3>
+          <p class="muted">Shadow of what was spent</p>
+          <div class="bar shadowbar"><span style="width:100%"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MENTAL/PHYSICAL STATS ===== -->
+  <section class="reveal" style="margin-top:22px">
+    <h2 style="text-align:center;margin-bottom:16px">Recovery Metrics</h2>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Mental Clarity</h3>
+        <div class="big">⭐⭐⭐⭐⭐</div>
+        <p class="muted">fog → laser focus</p>
+        <div class="bar" style="margin-top:8px">
+          <span style="width:100%;background:var(--green)"></span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Physical Energy</h3>
+        <div class="big">⭐⭐⭐⭐½</div>
+        <p class="muted">exhaustion → vitality</p>
+        <div class="bar" style="margin-top:8px">
+          <span style="width:90%;background:var(--gold)"></span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Emotional Stability</h3>
+        <div class="big">⭐⭐⭐⭐</div>
+        <p class="muted">chaos → balance</p>
+        <div class="bar" style="margin-top:8px">
+          <span style="width:80%;background:var(--neon)"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPEEDRUN ACHIEVEMENT ===== -->
+  <section class="reveal" style="margin-top:22px">
+    <div class="card center" style="border:2px solid #ffd166">
+      <h2>Speedrun Achievement</h2>
+      <p class="muted">Average attempts before success: 7-13</p>
+      <div class="big counter" style="color:#ffd166;margin:12px 0">You did it in ONE</div>
+      <div class="tag mono" style="background:#ffd166;color:#000">NO DEATH RUN - FIRST TRY</div>
+    </div>
+  </section>
+
+  <!-- ===== HEATMAP YEAR VIEW ===== -->
+  <section class="reveal" style="margin-top:22px">
+    <div class="checker" style="padding:22px">
+      <h2>365 Day Heatmap</h2>
+      <p class="muted">Every day a victory. Intensity = growth momentum.</p>
+      <div class="heatmap" id="heatmap"></div>
+    </div>
+  </section>
+
+  <!-- ===== DJ / VINYL ===== -->
+  <section class="reveal" style="margin-top:22px">
+    <div class="card center">
+      <h2>Beats over Breaking Bad</h2>
+      <div class="vinyl" aria-hidden="true"></div>
+      <div class="big counter" id="sets">47</div>
+      <p class="muted">DJ sets spun this year</p>
+      <div class="tag mono" style="background:linear-gradient(90deg,#ff2bd6,#00e5ff);color:#fff;border:none;margin-top:12px">
+        RAVE SOUL: RESTORED
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINALE: START PAINTING AGAIN ===== -->
+  <section class="reveal" style="margin:28px 0 60px">
+    <div class="card paint">
+      <h2>First Brushstroke — Year Two</h2>
+      <p class="muted">You didn't quit art; you were gathering colors.</p>
+
+      <div class="grid cols-2" style="margin-top:10px">
+        <div>
+          <h3>Concept</h3>
+          <ul>
+            <li>Canvas split: <em>Shadow Self</em> (muted greys) → <em>New Pulse</em> (neon cyan/pink burst)</li>
+            <li>88% darkness defeated, 12% light victorious</li>
+            <li>365 thin threads converging at center (daily choices)</li>
+            <li>Pink drip at top edge (letting go of the poison)</li>
+          </ul>
+          <a class="btn btn--neon" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'})">Day 366: Pick up the brush</a>
+        </div>
+        <div>
+          <h3>Palette</h3>
+          <ul>
+            <li><span class="mono">#00E5FF</span> electric cyan (clarity)</li>
+            <li><span class="mono">#FF2BD6</span> hot pink (rebirth)</li>
+            <li><span class="mono">#9945FF</span> legendary purple</li>
+            <li><span class="mono">#0C0F12</span> deep night (past)</li>
+          </ul>
+          <h3 style="margin-top:12px">Title Ideas</h3>
+          <ul>
+            <li><em>"1 in 1,000,000"</em></li>
+            <li><em>"88% Defeated"</em></li>
+            <li><em>"Level Two: Lightkeeper"</em></li>
+            <li><em>"365 Threads of Choice"</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="center muted" style="margin-bottom:60px">
+    Built with love. The light stays on.
+  </footer>
+</div>
+
+<script>
+  /* ======= PERSONALIZE HERE ======= */
+  const DATA = {
+    name: "Matt",
+    sobrietyStart: "2024-11-08",
+    sobrietyEnd:   "2025-11-08",
+    avgSavedPerMonth: [800, 1200],   // meth habit cost estimate
+    djSets: 47,
+    dailyXP: 10,
+    relapseRate: 88,  // % who relapse
+    survivalRate: 12,  // % who make it to 1 year
+    avgRelapses: 10,   // average before success
+    withdrawalDays: 180, // hardest phase
+    lifeYearsGained: 7  // potential years added back
+  };
+  /* ======= END PERSONALIZE ======= */
+
+  // Generate heatmap
+  const heatmap = document.getElementById('heatmap');
+  for(let i = 0; i < 365; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'heat-cell';
+    
+    // Vary intensity based on progress through the year
+    if(i < 30) cell.classList.add('low'); // First month hardest
+    else if(i < 90) cell.classList.add('med'); // Getting stronger
+    else if(i < 180) cell.classList.add('high'); // Building momentum
+    else if(Math.random() > 0.3) cell.classList.add('peak'); // Victory lap
+    else cell.classList.add('high');
+    
+    heatmap.appendChild(cell);
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ 
+      if(e.isIntersecting){ 
+        e.target.classList.add('show'); 
+        obs.unobserve(e.target); 
+      }
+    });
+  },{threshold:.15});
+  
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Animate counters
+  function animateCounter(el, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if(current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.textContent = Math.floor(current).toLocaleString();
+    }, 16);
+  }
+
+  // Trigger counter animations when visible
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        const el = e.target;
+        if(el.id === 'xp') animateCounter(el, 3650);
+        if(el.textContent === '180') animateCounter(el, 180);
+        if(el.textContent === '47') animateCounter(el, 47);
+        counterObs.unobserve(el);
+      }
+    });
+  }, {threshold: 0.5});
+
+  document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+</script>
+</body>
+</html>
