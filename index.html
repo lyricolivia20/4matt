@@ -442,7 +442,7 @@
     text-align: center;
     padding: 40px 20px;
     margin: 40px 0;
-    background: linear-gradient(135deg, #0e1319 0%, #1a1f2e 100%);
+    background: linear-gradient(135deg, #0e1319 0%, #1a1f3e 100%);
     border-radius: 20px;
     border: 1px solid #1b212a;
   }
@@ -846,24 +846,6 @@ document.querySelectorAll('.ring').forEach(el => {
   ringObserver.observe(el);
 });
 
-// ===== HEATMAP GENERATION (dynamic based on days sober) =====
-const heatmap = document.getElementById('heatmap');
-const maxCells = Math.min(daysSober, 365); // Cap at 365 for visual reasons
-for(let i = 0; i < maxCells; i++) {
-  const cell = document.createElement('div');
-  cell.className = 'heat-cell';
-  cell.style.setProperty('--index', i);
-  
-  // Vary intensity based on progress, peak more post-180
-  if(i < 30) cell.classList.add('low');
-  else if(i < 90) cell.classList.add('med');
-  else if(i < 180) cell.classList.add('high');
-  else if(i >= 180 && Math.random() > 0.2) cell.classList.add('peak'); // More peaks in back half
-  else cell.classList.add('high');
-  
-  heatmap.appendChild(cell);
-}
-
 // ===== LIQUID MORPH MOUSE TRACKING =====
 document.querySelectorAll('.liquid-section').forEach(section => {
   section.addEventListener('mousemove', (e) => {
@@ -947,6 +929,23 @@ window.addEventListener('load', () => {
     const xp = daysSober * 10;
     xpElement.textContent = `${xp.toLocaleString()} XP`;
     daysElement.textContent = `${daysSober} days sober`;
+  }
+  
+  // Generate heatmap for days sober
+  const heatmap = document.getElementById('heatmap');
+  const maxCells = Math.min(daysSober, 365);
+  for(let i = 0; i < maxCells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'heat-cell';
+    cell.style.setProperty('--index', i);
+    
+    if(i < 30) cell.classList.add('low');
+    else if(i < 90) cell.classList.add('med');
+    else if(i < 180) cell.classList.add('high');
+    else if(i >= 180 && Math.random() > 0.2) cell.classList.add('peak');
+    else cell.classList.add('high');
+    
+    heatmap.appendChild(cell);
   }
   
   // Start live timer
